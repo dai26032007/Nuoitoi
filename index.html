@@ -7,7 +7,7 @@
     
     <!-- --- SEO & BRANDING --- -->
     <title>Nuôi Tôi - Dự Án Sinh Tồn | Feed Me Project</title>
-    <meta name="description" content="Trang web kêu gọi tài trợ lương thực cho sinh viên nghèo vượt khó. Donate 2k cũng nhận! Hứa sao kê đầy đủ, minh bạch 100%.">
+    <meta name="description" content="HÃY NUÔI TÔI. Tôi hứa sao kê đầy đủ! 💯. Trang web kêu gọi tài trợ lương thực cho sinh viên nghèo vượt khó. Donate 2k cũng nhận!">
     <meta name="keywords" content="nuôi tôi, donate, sinh viên nghèo, sao kê, hài hước, charity, feed me, xin tiền online">
     <meta name="author" content="Feed Me Project">
     <meta name="theme-color" content="#f0fdf4">
@@ -16,17 +16,19 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nuoitoi.com/">
     <meta property="og:title" content="Nuôi Tôi - Dự Án Sinh Tồn 🌱">
-    <meta property="og:description" content="Hãy nuôi tôi! Tôi hứa sao kê đầy đủ từng gói mì tôm. Donate 2k cũng là quý nhân!">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1530260626688-d48233003fe9?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:description" content="HÃY NUÔI TÔI. Tôi hứa sao kê đầy đủ! 💯">
+    <meta property="og:image" content="https://i.imgur.com/KwfUBoi.jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Mầm non hy vọng - Dự án Nuôi Tôi">
 
     <!-- --- TWITTER CARD --- -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Nuôi Tôi - Dự Án Sinh Tồn 🌱">
-    <meta name="twitter:description" content="Kêu gọi tài trợ lương thực. Minh bạch tài chính 100%.">
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1530260626688-d48233003fe9?q=80&w=1200&auto=format&fit=crop">
+    <meta name="twitter:description" content="HÃY NUÔI TÔI. Tôi hứa sao kê đầy đủ! 💯">
+    <meta name="twitter:image" content="https://i.imgur.com/KwfUBoi.jpeg">
 
-    <!-- --- FAVICON (Cái lá 🌱) --- -->
+    <!-- --- FAVICON --- -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
     
     <!-- Tailwind CSS -->
@@ -34,11 +36,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans Thai', sans-serif;
             background-color: #f0fdf4;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -72,8 +74,10 @@
             margin-top: 0.5rem;
             background: white;
             border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            width: 160px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            max-height: 300px;
+            overflow-y: auto;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -89,19 +93,19 @@
         .lang-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 15px;
+            gap: 12px;
+            padding: 12px 16px;
             cursor: pointer;
             transition: background 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #374151;
+            border-bottom: 1px solid #f9fafb;
         }
+        .lang-item:last-child { border-bottom: none; }
         .lang-item:hover {
             background-color: #f0fdf4;
             color: #166534;
         }
-        .lang-item:first-child { border-radius: 0.75rem 0.75rem 0 0; }
-        .lang-item:last-child { border-radius: 0 0 0.75rem 0.75rem; }
 
         /* Card Hover Effects */
         .hover-card {
@@ -168,7 +172,7 @@
             
             <!-- Language Selector Area -->
             <div class="relative">
-                <button id="lang-btn" onclick="toggleDropdown(event)" class="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold py-2 px-4 rounded-full transition shadow-sm">
+                <button id="lang-btn" onclick="toggleDropdown(event)" class="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold py-2 px-4 rounded-full transition shadow-sm hover:shadow-md">
                     <span id="current-flag" class="text-xl">🇻🇳</span> 
                     <span id="current-lang-name" class="hidden md:inline">Tiếng Việt</span>
                     <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
@@ -180,13 +184,25 @@
                         <span class="text-xl">🇻🇳</span> <span>Tiếng Việt</span>
                     </div>
                     <div class="lang-item" onclick="changeLanguage('en')">
-                        <span class="text-xl">🇺🇸</span> <span>English</span>
+                        <span class="text-xl">🇬🇧</span> <span>English</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('zh')">
+                        <span class="text-xl">🇨🇳</span> <span>中文 (Trung)</span>
                     </div>
                     <div class="lang-item" onclick="changeLanguage('jp')">
-                        <span class="text-xl">🇯🇵</span> <span>日本語</span>
+                        <span class="text-xl">🇯🇵</span> <span>日本語 (Nhật)</span>
                     </div>
                     <div class="lang-item" onclick="changeLanguage('kr')">
-                        <span class="text-xl">🇰🇷</span> <span>한국어</span>
+                        <span class="text-xl">🇰🇷</span> <span>한국어 (Hàn)</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('fr')">
+                        <span class="text-xl">🇫🇷</span> <span>Français (Pháp)</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('ru')">
+                        <span class="text-xl">🇷🇺</span> <span>Русский (Nga)</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('th')">
+                        <span class="text-xl">🇹🇭</span> <span>ไทย (Thái)</span>
                     </div>
                 </div>
             </div>
@@ -351,6 +367,7 @@
                     <div class="relative inline-block group">
                         <!-- QR Image -->
                         <div class="bg-white p-2 rounded-xl shadow-inner border border-gray-200">
+                            <!-- UPDATE LINK QR -->
                             <img src="https://i.imgur.com/FSWqxlz.jpeg" alt="QR Code" class="w-48 h-48 object-contain mix-blend-multiply transition group-hover:scale-105 duration-300">
                         </div>
                     </div>
@@ -359,16 +376,22 @@
                     <div class="space-y-2 mt-6">
                         <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest" data-i18n="acc_num_label">Số Tài Khoản</p>
                         <div class="flex items-center justify-center gap-2 group cursor-pointer bg-blue-50 hover:bg-blue-100 p-3 rounded-xl border border-blue-100 hover:border-blue-300 transition duration-300" onclick="copyToClipboard('080226032007')">
+                            <!-- UPDATE STK -->
                             <span class="text-2xl font-mono font-bold text-[#120c6e] tracking-wider">0802.2603.2007</span>
                             <i class="fa-regular fa-copy text-blue-400 group-hover:text-blue-600"></i>
                         </div>
-                        <p class="text-sm font-bold text-gray-700 uppercase pt-2">NGUYEN VAN A</p>
+                        <!-- UPDATE NAME -->
+                        <p class="text-sm font-bold text-gray-700 uppercase pt-2">NGUYEN BA DAI</p>
                     </div>
                 </div>
             </div>
             
             <p class="mt-8 text-sm text-gray-400 italic">
                 *<span data-i18n="scan_note">Quét mã bằng app ngân hàng nào cũng được ạ.</span>*
+            </p>
+            <!-- Lời hứa mua xe -->
+            <p class="mt-2 text-sm text-gray-500 font-bold" data-i18n="car_promise">
+                Tôi hứa sẽ không mua ô tô bằng tiền donate. Vì... tôi chưa có bằng lái!
             </p>
 
         </section>
@@ -377,8 +400,8 @@
 
     <!-- Footer -->
     <footer class="bg-white/50 backdrop-blur border-t border-gray-100 text-gray-400 py-8 text-center text-sm relative z-10">
-        <p>
-            <strong>⚠️ <span data-i18n="disclaimer_title">LƯU Ý:</span></strong> <span data-i18n="disclaimer_text">Trang web này mang tính chất giải trí.</span>
+        <p class="container mx-auto px-4 max-w-2xl">
+            <strong>⚠️ <span data-i18n="disclaimer_title">LƯU Ý:</span></strong> <span data-i18n="disclaimer_text">Mọi nội dung trên web đều mang tính giải trí, không nhằm mục đích xúc phạm hay chỉ trích bất kỳ cá nhân/tổ chức nào.</span>
         </p>
         <div class="pt-4 mt-4 text-xs text-gray-300">
             &copy; 2025 <span data-i18n="footer_project">Dự án Nuôi Tôi.</span>
@@ -417,9 +440,13 @@
         
         const langConfig = {
             vi: { flag: '🇻🇳', name: 'Tiếng Việt' },
-            en: { flag: '🇺🇸', name: 'English' },
+            en: { flag: '🇬🇧', name: 'English' }, // Sửa cờ Anh
+            zh: { flag: '🇨🇳', name: '中文' },
             jp: { flag: '🇯🇵', name: '日本語' },
-            kr: { flag: '🇰🇷', name: '한국어' }
+            kr: { flag: '🇰🇷', name: '한국어' },
+            fr: { flag: '🇫🇷', name: 'Français' },
+            ru: { flag: '🇷🇺', name: 'Русский' },
+            th: { flag: '🇹🇭', name: 'ไทย' }
         };
 
         const translations = {
@@ -449,8 +476,9 @@
                 qr_note: "2.000đ cũng nhận ạ",
                 acc_num_label: "Số Tài Khoản",
                 scan_note: "Quét mã bằng app ngân hàng nào cũng được ạ.",
+                car_promise: "Tôi hứa sẽ không mua ô tô bằng tiền donate. Vì... tôi chưa có bằng lái!",
                 disclaimer_title: "LƯU Ý:",
-                disclaimer_text: "Trang web này mang tính chất giải trí.",
+                disclaimer_text: "Mọi nội dung trên web đều mang tính giải trí, không nhằm mục đích xúc phạm hay chỉ trích bất kỳ cá nhân/tổ chức nào.",
                 footer_project: "Dự án Nuôi Tôi.",
                 toast_copied: "Đã sao chép số tài khoản: ",
                 
@@ -489,8 +517,9 @@
                 qr_note: "Even 2.000đ is appreciated",
                 acc_num_label: "Account Number",
                 scan_note: "Scan with any banking app.",
+                car_promise: "I promise not to buy a car with donations. Because... I don't have a driver's license yet!",
                 disclaimer_title: "DISCLAIMER:",
-                disclaimer_text: "This website is for entertainment purposes.",
+                disclaimer_text: "All content on this website is for entertainment purposes only and is not intended to offend or criticize any individual/organization.",
                 footer_project: "Feed Me Project.",
                 toast_copied: "Copied account number: ",
                 just_now: "Just now",
@@ -500,6 +529,45 @@
                 withdrew: "Just withdrew",
                 donated: "Just donated",
                 pop_new: "New Notification"
+            },
+            zh: {
+                brand_name: "养我",
+                hero_tag: "🔋 需要能量生存",
+                hero_title_1: "请",
+                hero_title_highlight: "养我",
+                hero_subtitle: "承诺完全透明！ 💯",
+                hero_quote: "我很穷，我很饿，但我很正经。你赞助的每一顿饭，我都会记得直到下一顿。",
+                stat_balance: "💰 当前余额",
+                stat_realtime: "实时",
+                stat_goal: "🎯 本月目标",
+                stat_cheer: "快够学费了...",
+                plan_title: "钱花在哪里？",
+                plan_1: "重修学费",
+                plan_1_desc: "第一优先级，拯救我的学位。",
+                plan_2: "美禄 & 糖果",
+                plan_3: "零食 & 薯片",
+                history_title: "实时记录",
+                table_time: "时间",
+                table_user: "发送/接收",
+                table_amount: "金额",
+                table_content: "内容",
+                donate_title: "食品供应门户",
+                donate_desc: "每一份贡献对我来说都是一碗饭（或面条）。",
+                qr_note: "2,000越南盾也感激",
+                acc_num_label: "账号",
+                scan_note: "支持任何银行App扫描。",
+                car_promise: "我保证不用捐款买车。因为……我还没驾照！",
+                disclaimer_title: "注意：",
+                disclaimer_text: "本网站所有内容仅供娱乐，无意冒犯或批评任何个人/组织。",
+                footer_project: "养我计划。",
+                toast_copied: "已复制账号： ",
+                just_now: "刚刚",
+                today: "今天",
+                yesterday: "昨天",
+                report_title: "支出报告",
+                withdrew: "刚取出",
+                donated: "刚捐赠",
+                pop_new: "新通知"
             },
             jp: {
                 brand_name: "私を養って",
@@ -527,8 +595,9 @@
                 qr_note: "2,000ドンでも感謝します",
                 acc_num_label: "口座番号",
                 scan_note: "どの銀行アプリでもスキャン可能です。",
+                car_promise: "寄付金で車を買わないと約束します。なぜなら…まだ免許を持っていないからです！",
                 disclaimer_title: "免責事項:",
-                disclaimer_text: "このウェブサイトは娯楽目的です。",
+                disclaimer_text: "このウェブサイトのすべてのコンテンツは娯楽目的であり、個人や団体を不快にさせたり批判したりする意図はありません。",
                 footer_project: "Feed Me Project.",
                 toast_copied: "口座番号をコピーしました: ",
                 just_now: "たった今",
@@ -565,8 +634,9 @@
                 qr_note: "2,000동도 감사합니다",
                 acc_num_label: "계좌 번호",
                 scan_note: "모든 은행 앱으로 스캔 가능합니다.",
+                car_promise: "기부금으로 차를 사지 않겠다고 약속합니다. 왜냐하면... 아직 운전면허가 없거든요!",
                 disclaimer_title: "주의:",
-                disclaimer_text: "이 웹사이트는 오락용입니다.",
+                disclaimer_text: "본 웹사이트의 모든 콘텐츠는 오락용이며, 특정 개인/단체를 모욕하거나 비판할 의도가 없습니다.",
                 footer_project: "Feed Me Project.",
                 toast_copied: "계좌 번호 복사 완료: ",
                 just_now: "방금",
@@ -576,6 +646,123 @@
                 withdrew: "출금 완료",
                 donated: "기부 받음",
                 pop_new: "새로운 알림"
+            },
+            fr: {
+                brand_name: "NOURRIS-MOI",
+                hero_tag: "🔋 Besoin d'énergie pour survivre",
+                hero_title_1: "SVP",
+                hero_title_highlight: "NOURRIS-MOI",
+                hero_subtitle: "Transparence totale promise ! 💯",
+                hero_quote: "Je suis pauvre, j'ai faim, mais je suis honnête. Chaque repas offert, je m'en souviendrai jusqu'au suivant.",
+                stat_balance: "💰 Solde Actuel",
+                stat_realtime: "En direct",
+                stat_goal: "🎯 Objectif du mois",
+                stat_cheer: "Presque assez pour les frais de scolarité...",
+                plan_title: "Où va l'argent ?",
+                plan_1: "Frais de rattrapage",
+                plan_1_desc: "Priorité n°1, sauver mon diplôme.",
+                plan_2: "Milo & Bonbons",
+                plan_3: "Snacks & Chips",
+                history_title: "Historique en direct",
+                table_time: "Heure",
+                table_user: "Expéditeur/Receveur",
+                table_amount: "Montant",
+                table_content: "Contenu",
+                donate_title: "PORTAIL DE RAVITAILLEMENT",
+                donate_desc: "Chaque contribution est un bol de riz (ou de nouilles) pour moi.",
+                qr_note: "Même 2.000đ sont appréciés",
+                acc_num_label: "Numéro de compte",
+                scan_note: "Scannez avec n'importe quelle app bancaire.",
+                car_promise: "Je promets de ne pas acheter de voiture avec les dons. Parce que... je n'ai pas encore mon permis !",
+                disclaimer_title: "ATTENTION :",
+                disclaimer_text: "Tout le contenu de ce site est à des fins de divertissement et n'a pas pour but d'offenser ou de critiquer un individu/une organisation.",
+                footer_project: "Projet Feed Me.",
+                toast_copied: "Compte copié : ",
+                just_now: "À l'instant",
+                today: "Aujourd'hui",
+                yesterday: "Hier",
+                report_title: "Rapport de dépenses",
+                withdrew: "Vient de retirer",
+                donated: "Vient de donner",
+                pop_new: "Nouvelle notification"
+            },
+            ru: {
+                brand_name: "ПОКОРМИ МЕНЯ",
+                hero_tag: "🔋 Нужна энергия для жизни",
+                hero_title_1: "ПОЖАЛУЙСТА",
+                hero_title_highlight: "ПОКОРМИ",
+                hero_subtitle: "Полная прозрачность! 💯",
+                hero_quote: "Я беден, я голоден, но я честен. Каждый ваш обед я буду помнить до следующего.",
+                stat_balance: "💰 Текущий баланс",
+                stat_realtime: "В реальном времени",
+                stat_goal: "🎯 Цель месяца",
+                stat_cheer: "Почти хватает на пересдачу...",
+                plan_title: "Куда уходят деньги?",
+                plan_1: "Оплата пересдачи",
+                plan_1_desc: "Приоритет №1, спасаю диплом.",
+                plan_2: "Мило и сладости",
+                plan_3: "Снэки и чипсы",
+                history_title: "История (Live)",
+                table_time: "Время",
+                table_user: "Отправитель",
+                table_amount: "Сумма",
+                table_content: "Сообщение",
+                donate_title: "ПОРТАЛ СНАБЖЕНИЯ",
+                donate_desc: "Каждый вклад — это тарелка риса (или лапши) для меня.",
+                qr_note: "Даже 2.000đ важны",
+                acc_num_label: "Номер счета",
+                scan_note: "Сканируйте любым банковским приложением.",
+                car_promise: "Обещаю не покупать машину на донаты. Потому что... у меня еще нет прав!",
+                disclaimer_title: "ВНИМАНИЕ:",
+                disclaimer_text: "Весь контент на этом сайте предназначен только для развлекательных целей и не направлен на оскорбление или критику каких-либо лиц/организаций.",
+                footer_project: "Проект Feed Me.",
+                toast_copied: "Скопировано: ",
+                just_now: "Только что",
+                today: "Сегодня",
+                yesterday: "Вчера",
+                report_title: "Отчет о расходах",
+                withdrew: "Только что снял",
+                donated: "Только что задонатил",
+                pop_new: "Новое уведомление"
+            },
+            th: {
+                brand_name: "เลี้ยงฉันหน่อย",
+                hero_tag: "🔋 ต้องการพลังงานเพื่อความอยู่รอด",
+                hero_title_1: "ได้โปรด",
+                hero_title_highlight: "เลี้ยงฉัน",
+                hero_subtitle: "สัญญาว่าจะโปร่งใส 100%! 💯",
+                hero_quote: "ฉันจน ฉันหิว แต่ฉันจริงใจ ทุกมื้อที่คุณเลี้ยง ฉันจะจำไปจนถึงมื้อหน้า",
+                stat_balance: "💰 ยอดเงินปัจจุบัน",
+                stat_realtime: "เรียลไทม์",
+                stat_goal: "🎯 เป้าหมายเดือนนี้",
+                stat_cheer: "ใกล้จะพอค่าเทอมแล้ว...",
+                plan_title: "เงินเอาไปทำอะไร?",
+                plan_1: "ค่าลงเรียนซ้ำ",
+                plan_1_desc: "ลำดับที่ 1 ช่วยชีวิตใบปริญญา",
+                plan_2: "ไมโล & ลูกอม",
+                plan_3: "ขนม & มันฝรั่งทอด",
+                history_title: "ประวัติเรียลไทม์",
+                table_time: "เวลา",
+                table_user: "ผู้ส่ง/ผู้รับ",
+                table_amount: "จำนวนเงิน",
+                table_content: "ข้อความ",
+                donate_title: "ช่องทางส่งเสบียง",
+                donate_desc: "ทุกการบริจาคคือข้าวหนึ่งจาน (หรือบะหมี่) สำหรับฉัน",
+                qr_note: "2,000 ดองก็รับนะ ❤️",
+                acc_num_label: "เลขที่บัญชี",
+                scan_note: "สแกนได้ทุกแอปธนาคาร",
+                car_promise: "ฉันสัญญาว่าจะไม่นำเงินบริจาคไปซื้อรถ เพราะ... ฉันยังไม่มีใบขับขี่!",
+                disclaimer_title: "หมายเหตุ:",
+                disclaimer_text: "เนื้อหาทั้งหมดบนเว็บไซต์นี้เพื่อความบันเทิงเท่านั้น ไม่ได้มีเจตนาล่วงเกินหรือวิจารณ์บุคคล/องค์กรใดๆ",
+                footer_project: "โครงการเลี้ยงฉัน",
+                toast_copied: "คัดลอกเลขบัญชีแล้ว: ",
+                just_now: "เมื่อกี้",
+                today: "วันนี้",
+                yesterday: "เมื่อวาน",
+                report_title: "รายงานการใช้จ่าย",
+                withdrew: "เพิ่งถอนเงิน",
+                donated: "เพิ่งโดเนท",
+                pop_new: "การแจ้งเตือนใหม่"
             }
         };
 
@@ -627,11 +814,11 @@
         const initialTransactions = [
             { name: "TRINH THI MAI (Tap hoa co Mai)", amount: 12000, msg: "Mua 2 goi Bim Bim", fixedHour: 15, fixedMin: 32, type: 'spend', baseDayOffset: 0 },
             { name: "LE QUOC NHAN", amount: 2000, msg: "Con co 2k thui", fixedHour: 12, fixedMin: 14, type: 'receive', baseDayOffset: 0 },
-            { name: "TRAN MINH", amount: 3000, msg: "Cua it long vong", fixedHour: 10, fixedMin: 47, type: 'receive', baseDayOffset: 0 },
-            { name: "NGUYEN VAN TUAN (Circle K)", amount: 15000, msg: "Mua chai nuoc ngot", fixedHour: 20, fixedMin: 03, type: 'spend', baseDayOffset: 1 },
+            { name: "TRAN MINH DUC", amount: 3000, msg: "Cua it long vong", fixedHour: 10, fixedMin: 47, type: 'receive', baseDayOffset: 0 },
+            { name: "NGUYEN VAN TUAN (Quan tap hoa)", amount: 15000, msg: "Mua chai nuoc ngot", fixedHour: 20, fixedMin: 03, type: 'spend', baseDayOffset: 1 },
             { name: "NGUYEN KHANH LINH", amount: 50000, msg: "NGUYEN KHANH LINH chuyen khoan", fixedHour: 14, fixedMin: 21, type: 'receive', baseDayOffset: 1 },
-            { name: "VU THI YEN NHI (Quan com tam)", amount: 35000, msg: "Com suon bi cha", fixedHour: 11, fixedMin: 38, type: 'spend', baseDayOffset: 2 },
-            { name: "PHAM THI THU HA (Ban cung lop)", amount: 20000, msg: "Mua banh mi nha", fixedHour: 7, fixedMin: 12, type: 'receive', baseDayOffset: 2 },
+            { name: "VU THI YEN NHI (Quan com tam)", amount: 35000, msgAn com suon", fixedHour: 11, fixedMin: 38, type: 'spend', baseDayOffset: 2 },
+            { name: "PHAM THI THU HA (Ban cung lop)", amount: 20000, msg: "Mua banh mi ma an", fixedHour: 7, fixedMin: 12, type: 'receive', baseDayOffset: 2 },
             { name: "NGUYEN VAN LONG", amount: 10000, msg: "NGUYEN VAN LONG chuyen tien", fixedHour: 16, fixedMin: 09, type: 'receive', baseDayOffset: 3 },
             { name: "PHAM THUY BIEN (Me yeu)", amount: 200000, msg: "Cho tien dong tien hoc", fixedHour: 8, fixedMin: 04, type: 'receive', baseDayOffset: 3 }
         ];
@@ -838,7 +1025,7 @@
             renderTableFromMasterData();
 
             setTimeout(() => {
-                addNewTransaction("TRAN THI BICH NGOC (Ban cu cap 3)", 20000, "Uong nuoc nha", "receive");
+                addNewTransaction("TRAN THI BICH NGOC (Ban cu cap 3)", 20000, "Cho mua milo", "receive");
             }, 15000);
 
             setTimeout(() => {
