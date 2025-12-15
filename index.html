@@ -2,8 +2,33 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuôi Tôi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- --- SEO & BRANDING --- -->
+    <title>Nuôi Tôi - Dự Án Sinh Tồn | Feed Me Project</title>
+    <meta name="description" content="Trang web kêu gọi tài trợ lương thực cho sinh viên nghèo vượt khó. Donate 2k cũng nhận! Hứa sao kê đầy đủ, minh bạch 100%.">
+    <meta name="keywords" content="nuôi tôi, donate, sinh viên nghèo, sao kê, hài hước, charity, feed me, xin tiền online">
+    <meta name="author" content="Feed Me Project">
+    <meta name="theme-color" content="#f0fdf4">
+
+    <!-- --- OPEN GRAPH (Facebook, Zalo, Messenger) --- -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nuoitoi.com/">
+    <meta property="og:title" content="Nuôi Tôi - Dự Án Sinh Tồn 🌱">
+    <meta property="og:description" content="Hãy nuôi tôi! Tôi hứa sao kê đầy đủ từng gói mì tôm. Donate 2k cũng là quý nhân!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1530260626688-d48233003fe9?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:image:alt" content="Mầm non hy vọng - Dự án Nuôi Tôi">
+
+    <!-- --- TWITTER CARD --- -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nuôi Tôi - Dự Án Sinh Tồn 🌱">
+    <meta name="twitter:description" content="Kêu gọi tài trợ lương thực. Minh bạch tài chính 100%.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1530260626688-d48233003fe9?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- --- FAVICON (Cái lá 🌱) --- -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -16,6 +41,7 @@
             font-family: 'Nunito', sans-serif;
             background-color: #f0fdf4;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Loading Screen */
@@ -332,11 +358,11 @@
                     <!-- Account Info -->
                     <div class="space-y-2 mt-6">
                         <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest" data-i18n="acc_num_label">Số Tài Khoản</p>
-                        <div class="flex items-center justify-center gap-2 group cursor-pointer bg-blue-50 hover:bg-blue-100 p-3 rounded-xl border border-blue-100 hover:border-blue-300 transition duration-300" onclick="copyToClipboard('1122334455')">
-                            <span class="text-2xl font-mono font-bold text-[#120c6e] tracking-wider">080226032007</span>
+                        <div class="flex items-center justify-center gap-2 group cursor-pointer bg-blue-50 hover:bg-blue-100 p-3 rounded-xl border border-blue-100 hover:border-blue-300 transition duration-300" onclick="copyToClipboard('080226032007')">
+                            <span class="text-2xl font-mono font-bold text-[#120c6e] tracking-wider">0802.2603.2007</span>
                             <i class="fa-regular fa-copy text-blue-400 group-hover:text-blue-600"></i>
                         </div>
-                        <p class="text-sm font-bold text-gray-700 uppercase pt-2">NGUYEN BA DAI</p>
+                        <p class="text-sm font-bold text-gray-700 uppercase pt-2">NGUYEN VAN A</p>
                     </div>
                 </div>
             </div>
@@ -391,7 +417,7 @@
         
         const langConfig = {
             vi: { flag: '🇻🇳', name: 'Tiếng Việt' },
-            en: { flag: '🇬🇧', name: 'English' },
+            en: { flag: '🇺🇸', name: 'English' },
             jp: { flag: '🇯🇵', name: '日本語' },
             kr: { flag: '🇰🇷', name: '한국어' }
         };
@@ -426,6 +452,7 @@
                 disclaimer_title: "LƯU Ý:",
                 disclaimer_text: "Trang web này mang tính chất giải trí.",
                 footer_project: "Dự án Nuôi Tôi.",
+                toast_copied: "Đã sao chép số tài khoản: ",
                 
                 // Dynamic Text
                 just_now: "Vừa xong",
@@ -465,6 +492,7 @@
                 disclaimer_title: "DISCLAIMER:",
                 disclaimer_text: "This website is for entertainment purposes.",
                 footer_project: "Feed Me Project.",
+                toast_copied: "Copied account number: ",
                 just_now: "Just now",
                 today: "Today",
                 yesterday: "Yesterday",
@@ -502,6 +530,7 @@
                 disclaimer_title: "免責事項:",
                 disclaimer_text: "このウェブサイトは娯楽目的です。",
                 footer_project: "Feed Me Project.",
+                toast_copied: "口座番号をコピーしました: ",
                 just_now: "たった今",
                 today: "今日",
                 yesterday: "昨日",
@@ -539,6 +568,7 @@
                 disclaimer_title: "주의:",
                 disclaimer_text: "이 웹사이트는 오락용입니다.",
                 footer_project: "Feed Me Project.",
+                toast_copied: "계좌 번호 복사 완료: ",
                 just_now: "방금",
                 today: "오늘",
                 yesterday: "어제",
@@ -573,7 +603,7 @@
             // Update Static Text
             updateStaticText();
 
-            // Re-render Table (Dùng Master Data để không bị mất dòng mới)
+            // Re-render Table
             renderTableFromMasterData();
 
             // Close menu
@@ -606,15 +636,13 @@
             { name: "PHAM THUY BIEN (Me yeu)", amount: 200000, msg: "Cho tien dong tien hoc", fixedHour: 8, fixedMin: 04, type: 'receive', baseDayOffset: 3 }
         ];
 
-        // Biến chứa TẤT CẢ giao dịch (để fix lỗi mất data khi đổi ngôn ngữ)
+        // Biến chứa TẤT CẢ giao dịch
         let masterTransactionList = [];
 
         // --- HÀM XỬ LÝ TIME & INIT ---
         function processTime(item) {
-            // Nếu item đã có dateObj (là item được thêm dynamic), giữ nguyên
             if (item.dateObj) return item;
 
-            // Nếu là static item, tính toán dateObj dựa trên logic giờ cố định
             const now = new Date();
             const currentHour = now.getHours();
             const currentMin = now.getMinutes();
@@ -628,27 +656,22 @@
             eventTime.setDate(now.getDate() - finalDayOffset);
             eventTime.setHours(item.fixedHour, item.fixedMin, 0, 0);
             
-            // Return copy object with processed data
             return { ...item, dateObj: eventTime, finalDayOffset: finalDayOffset };
         }
 
         function initData() {
-            // Xử lý dữ liệu ban đầu và đưa vào Master List
             initialTransactions.forEach(item => {
                 masterTransactionList.push(processTime(item));
             });
-            // Sort
             masterTransactionList.sort((a, b) => b.dateObj - a.dateObj);
         }
 
-        // --- HÀM RENDER TỪ MASTER LIST ---
+        // --- HÀM RENDER ---
         function renderTableFromMasterData() {
             const tableBody = document.getElementById('history-body');
-            tableBody.innerHTML = ''; // Clear table
+            tableBody.innerHTML = '';
             
             masterTransactionList.forEach(item => {
-                // Kiểm tra xem item này có phải là item mới thêm vào gần đây không để highlight
-                // Logic đơn giản: Nếu nó được thêm bằng JS dynamic, nó sẽ có cờ isDynamic
                 const isNew = item.isDynamic && (Date.now() - item.dateObj.getTime() < 10000); 
                 tableBody.innerHTML += createRowHTML(item, isNew);
             });
@@ -663,7 +686,6 @@
             return total;
         }
 
-        // --- UTILS FORMAT & ANIMATION ---
         function formatMoney(amount) {
             return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
@@ -690,7 +712,6 @@
             document.getElementById('progress-text').innerText = `${percentage}%`;
         }
 
-        // --- CREATE HTML ROW (Hỗ trợ đa ngôn ngữ) ---
         function createRowHTML(item, isNew = false) {
             let timeString;
             const txtNow = translations[currentLang].just_now;
@@ -701,21 +722,14 @@
             const m = item.dateObj.getMinutes().toString().padStart(2, '0');
             const d = item.dateObj.getDate().toString().padStart(2, '0');
             const mo = (item.dateObj.getMonth() + 1).toString().padStart(2, '0');
-            const y = item.dateObj.getFullYear();
-
-            // Logic hiển thị ngày tháng thông minh theo ngôn ngữ
-            let dayLabel = "";
             
-            // Tính khoảng cách ngày để label chính xác (cho cả item dynamic)
+            let dayLabel = "";
             const now = new Date();
             const diffTime = Math.abs(now - item.dateObj);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             
-            // Nếu là dynamic item vừa thêm
             if (item.isDynamic && diffTime < 60000) {
                  timeString = `${h}:${m} <br> <span class="text-xs text-green-600 font-bold">${txtNow}</span>`;
             } else {
-                // Logic ngày tháng
                 if (now.getDate() === item.dateObj.getDate()) {
                     dayLabel = `<span class="text-green-600 font-bold">${txtToday}</span>`;
                 } else if (now.getDate() - item.dateObj.getDate() === 1) {
@@ -729,7 +743,6 @@
             const isSpend = item.type === 'spend';
             const amountColor = isSpend ? 'text-red-500' : 'text-green-600';
             const amountSign = isSpend ? '-' : '+';
-            // Chỉ highlight nếu isNew = true
             const rowClass = isNew ? 'new-row-highlight' : (isSpend ? 'hover:bg-red-50/50' : 'hover:bg-green-50/50');
             
             let displayName = item.name;
@@ -759,22 +772,17 @@
             animateTotal(oldTotal, currentTotal);
             updateProgressBar(currentTotal);
 
-            // Tạo item mới
             const newItem = { 
                 name, 
                 amount, 
                 msg, 
                 type, 
-                dateObj: new Date(), // Set thời gian thực ngay lúc thêm
-                isDynamic: true // Đánh dấu là item động
+                dateObj: new Date(),
+                isDynamic: true 
             };
 
-            // THÊM VÀO MASTER LIST (Đây là bước quan trọng để không bị mất khi đổi ngôn ngữ)
             masterTransactionList.unshift(newItem);
-
-            // Render lại toàn bộ bảng (thay vì insertAdjacentHTML) để đảm bảo đồng bộ
             renderTableFromMasterData();
-
             showMessengerPopup(newItem);
         }
 
@@ -788,8 +796,6 @@
             const message = document.getElementById('pop-msg');
 
             const isSpend = item.type === 'spend';
-            
-            // Localized Strings
             const txtReport = translations[currentLang].report_title;
             const txtWithdrew = translations[currentLang].withdrew;
             const txtDonated = translations[currentLang].donated;
@@ -825,28 +831,25 @@
         });
 
         function initWebLogic() {
-            initData(); // Init Master List
+            initData();
             currentTotal = calculateInitialTotal();
             document.getElementById('total-balance-display').innerHTML = formatMoney(currentTotal);
             updateProgressBar(currentTotal);
-
-            // Initial Render
             renderTableFromMasterData();
 
-            // Kịch bản tự động
             setTimeout(() => {
                 addNewTransaction("TRAN THI BICH NGOC (Ban cu cap 3)", 20000, "Uong nuoc nha", "receive");
-            }, 15000); // 15s
+            }, 15000);
 
             setTimeout(() => {
                 addNewTransaction("VIETTEL TELECOM (Nap tien DT)", 50000, "Gia han goi 4G thang", "spend");
-            }, 45000); // 45s
+            }, 45000);
         }
 
-        // Copy logic
         function copyToClipboard(text) {
+            const msg = translations[currentLang].toast_copied + text;
             navigator.clipboard.writeText(text).then(() => {
-                showToast(`Đã copy: ${text}`);
+                showToast(msg);
             }).catch(err => {
                 const textArea = document.createElement("textarea");
                 textArea.value = text;
@@ -854,7 +857,7 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showToast(`Đã copy: ${text}`);
+                showToast(msg);
             });
         }
         function showToast(message) {
