@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuôi Tôi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        #preloader.hidden-loader {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Dropdown Menu Language */
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 50;
+            border: 1px solid #f0f0f0;
+        }
+        .lang-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .lang-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+        .lang-item:hover {
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+        .lang-item:first-child { border-radius: 0.75rem 0.75rem 0 0; }
+        .lang-item:last-child { border-radius: 0 0 0.75rem 0.75rem; }
+
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+        }
+
+        /* Text Shimmer Effect */
+        .shimmer {
+            background: linear-gradient(to right, #166534 0%, #4ade80 50%, #166534 100%);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Animation cho dòng mới */
+        .new-row-highlight {
+            animation: highlightFade 3s ease-out;
+            background-color: #dcfce7;
+        }
+        @keyframes highlightFade {
+            0% { background-color: #86efac; }
+            100% { background-color: transparent; }
+        }
+        
+        /* Messenger Style Popup */
+        .messenger-pop {
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateY(-150%);
+            opacity: 0;
+        }
+        .messenger-pop.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800 relative bg-gradient-to-b from-green-50 to-white min-h-screen" onclick="closeDropdown(event)">
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="flex flex-col items-center justify-center gap-6">
+            <i class="fa-solid fa-seedling text-6xl text-green-500 animate-bounce"></i>
+            <div class="w-8 h-8 border-4 border-green-100 border-t-green-500 rounded-full animate-spin"></div>
+        </div>
+    </div>
+
+    <!-- Sticky Header -->
+    <nav class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-md border-b border-green-100 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl md:text-2xl font-extrabold text-green-600 flex items-center gap-2 hover:scale-105 transition">
+                <i class="fa-solid fa-seedling animate-bounce"></i> 
+                <span data-i18n="brand_name">NUÔI TÔI</span>
+            </a>
+            
+            <!-- Language Selector Area -->
+            <div class="relative">
+                <button id="lang-btn" onclick="toggleDropdown(event)" class="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold py-2 px-4 rounded-full transition shadow-sm">
+                    <span id="current-flag" class="text-xl">🇻🇳</span> 
+                    <span id="current-lang-name" class="hidden md:inline">Tiếng Việt</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="lang-menu" class="lang-dropdown">
+                    <div class="lang-item" onclick="changeLanguage('vi')">
+                        <span class="text-xl">🇻🇳</span> <span>Tiếng Việt</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('en')">
+                        <span class="text-xl">🇺🇸</span> <span>English</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('jp')">
+                        <span class="text-xl">🇯🇵</span> <span>日本語</span>
+                    </div>
+                    <div class="lang-item" onclick="changeLanguage('kr')">
+                        <span class="text-xl">🇰🇷</span> <span>한국어</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-24 pb-10 container mx-auto px-4 max-w-4xl">
+        
+        <!-- Hero Section -->
+        <section class="text-center py-8 space-y-4">
+            <div class="inline-block bg-green-100 text-green-800 px-4 py-1 rounded-full text-xs md:text-sm font-bold mb-2 shadow-sm animate-pulse">
+                <span data-i18n="hero_tag">🔋 Cần nạp năng lượng để tồn tại</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+                <span data-i18n="hero_title_1">HÃY</span> <span class="shimmer" data-i18n="hero_title_highlight">NUÔI TÔI</span>.<br>
+                <span class="text-xl md:text-3xl text-gray-500 font-bold mt-2 block" data-i18n="hero_subtitle">Tôi hứa sao kê đầy đủ! 💯</span>
+            </h1>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto italic">
+                "<span data-i18n="hero_quote">Tôi nghèo, tôi đói, nhưng tôi uy tín. Mỗi bữa ăn bạn mời, tôi sẽ ghi nhớ đến tận bữa sau.</span>"
+            </p>
+        </section>
+
+        <!-- Money Dashboard -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <!-- Collected -->
+            <div class="bg-white p-6 rounded-3xl shadow-lg border border-green-100 relative overflow-hidden hover-card group">
+                <div class="absolute -right-6 -top-6 bg-green-50 w-24 h-24 rounded-full group-hover:scale-150 transition duration-500"></div>
+                <div class="relative z-10">
+                    <p class="text-gray-500 text-sm font-bold uppercase tracking-wider" data-i18n="stat_balance">💰 Số Dư Hiện Tại</p>
+                    <h3 class="text-4xl font-extrabold text-green-600 mt-2 transition-all duration-300" id="total-balance-display">0</h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-1">VND (<span data-i18n="stat_realtime">Realtime</span>)</p>
+                </div>
+            </div>
+            
+            <!-- Goal Progress -->
+            <div class="bg-white p-6 rounded-3xl shadow-lg border border-yellow-100 md:col-span-2 hover-card relative overflow-hidden">
+                <div class="flex justify-between items-end mb-4 relative z-10">
+                    <div>
+                        <p class="text-gray-500 text-sm font-bold uppercase tracking-wider" data-i18n="stat_goal">🎯 Mục tiêu tháng này</p>
+                        <h3 class="text-3xl font-extrabold text-gray-800 mt-1 flex items-baseline gap-2">
+                            1.000.000 <span class="text-sm text-gray-400">VND</span>
+                        </h3>
+                    </div>
+                    <span class="text-yellow-700 font-bold bg-yellow-100 px-3 py-1 rounded-full text-sm shadow-sm" id="progress-text">0%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner relative z-10">
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-400 h-4 rounded-full transition-all duration-500 ease-out" style="width: 0%" id="progress-bar">
+                        <div class="w-full h-full opacity-30 bg-[length:10px_10px] bg-[linear-gradient(45deg,rgba(255,255,255,.15)25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)50%,rgba(255,255,255,.15)75%,transparent_75%,transparent)] animate-[pulse_1s_linear_infinite]"></div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-2 italic text-right relative z-10" data-i18n="stat_cheer">Sắp đủ tiền đóng học lại rồi...</p>
+            </div>
+        </section>
+
+        <!-- Spending Plan -->
+        <section class="bg-white p-8 rounded-3xl shadow-xl mb-12 border border-gray-100 hover-card">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-gray-800">
+                <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <span data-i18n="plan_title">Tôi Sẽ Dùng Tiền Vào Đâu?</span>
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- Item 1 -->
+                <div class="group">
+                    <div class="flex justify-between mb-2 text-sm font-bold">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-blue-500"></i> <span data-i18n="plan_1">Đóng tiền học lại</span></span>
+                        <span class="text-blue-600 bg-blue-50 px-2 rounded">50%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                        <div class="bg-blue-500 h-3 rounded-full w-0 transition-all duration-1000 delay-300 group-hover:bg-blue-600" style="width: 50%" data-width="50%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1 ml-6" data-i18n="plan_1_desc">Ưu tiên số 1, cứu vớt tấm bằng.</p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="group">
+                    <div class="flex justify-between mb-2 text-sm font-bold">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-mug-hot text-green-500"></i> <span data-i18n="plan_2">Sữa Milo & Kẹo</span></span>
+                        <span class="text-green-600 bg-green-50 px-2 rounded">30%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                        <div class="bg-green-500 h-3 rounded-full w-0 transition-all duration-1000 delay-500 group-hover:bg-green-600" style="width: 30%" data-width="30%"></div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="group">
+                    <div class="flex justify-between mb-2 text-sm font-bold">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-cookie-bite text-orange-500"></i> <span data-i18n="plan_3">Bim bim (Snack)</span></span>
+                        <span class="text-orange-600 bg-orange-50 px-2 rounded">20%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                        <div class="bg-orange-400 h-3 rounded-full w-0 transition-all duration-1000 delay-700 group-hover:bg-orange-500" style="width: 20%" data-width="20%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Table (Sao Kê) -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h2 class="text-xl md:text-2xl font-extrabold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-green-600"></i> <span data-i18n="history_title">Sao Kê Realtime</span>
+                </h2>
+                <div class="flex items-center gap-1 bg-green-100 px-3 py-1 rounded-full shadow-sm">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-green-700">Live</span>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="p-4 border-b" data-i18n="table_time">Thời gian</th>
+                                <th class="p-4 border-b" data-i18n="table_user">Người chuyển/Nhận</th>
+                                <th class="p-4 border-b text-right" data-i18n="table_amount">Số tiền</th>
+                                <th class="p-4 border-b" data-i18n="table_content">Nội dung</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-gray-100" id="history-body">
+                            <!-- Javascript renders here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donate Section (MB Bank Only) -->
+        <section id="donate" class="bg-white rounded-[2rem] p-8 md:p-12 text-center shadow-2xl border-4 border-white ring-1 ring-gray-100 relative overflow-visible transform transition hover:-translate-y-1">
+            
+            <h2 class="text-3xl font-extrabold mb-2 text-gray-800 relative z-10" data-i18n="donate_title">CỔNG TIẾP TẾ LƯƠNG THỰC</h2>
+            <p class="text-gray-500 mb-8 relative z-10" data-i18n="donate_desc">Mỗi đóng góp của bạn là một bát cơm (hoặc gói mì) cho tôi.</p>
+
+            <div class="max-w-xs mx-auto bg-white rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.15)] border border-gray-100 overflow-visible relative z-10 pb-4">
+                
+                <!-- MB Header -->
+                <div class="bg-[#120c6e] p-4 flex items-center justify-center gap-3 rounded-t-2xl">
+                    <div class="bg-white p-1 rounded h-8 w-16 flex items-center justify-center shadow-sm">
+                         <!-- Logo MB -->
+                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Logo_MB_new.png" alt="MB" class="h-full object-contain">
+                    </div>
+                    <span class="text-white font-bold tracking-widest text-sm">MB BANK</span>
+                </div>
+
+                <div class="p-6 pb-2">
+                    <!-- Note 2k (Tag nằm ngang, gọn gàng trên QR) -->
+                    <div class="mb-3 text-center">
+                        <span class="inline-block bg-red-50 text-red-600 text-xs font-bold px-3 py-1 rounded-full border border-red-100 shadow-sm animate-pulse">
+                             ❤️ <span data-i18n="qr_note">2.000đ cũng nhận ạ</span>
+                        </span>
+                    </div>
+
+                    <!-- QR Code Container -->
+                    <div class="relative inline-block group">
+                        <!-- QR Image -->
+                        <div class="bg-white p-2 rounded-xl shadow-inner border border-gray-200">
+                            <img src="https://i.imgur.com/FSWqxlz.jpeg" alt="QR Code" class="w-48 h-48 object-contain mix-blend-multiply transition group-hover:scale-105 duration-300">
+                        </div>
+                    </div>
+
+                    <!-- Account Info -->
+                    <div class="space-y-2 mt-6">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest" data-i18n="acc_num_label">Số Tài Khoản</p>
+                        <div class="flex items-center justify-center gap-2 group cursor-pointer bg-blue-50 hover:bg-blue-100 p-3 rounded-xl border border-blue-100 hover:border-blue-300 transition duration-300" onclick="copyToClipboard('1122334455')">
+                            <span class="text-2xl font-mono font-bold text-[#120c6e] tracking-wider">080226032007</span>
+                            <i class="fa-regular fa-copy text-blue-400 group-hover:text-blue-600"></i>
+                        </div>
+                        <p class="text-sm font-bold text-gray-700 uppercase pt-2">NGUYEN BA DAI</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="mt-8 text-sm text-gray-400 italic">
+                *<span data-i18n="scan_note">Quét mã bằng app ngân hàng nào cũng được ạ.</span>*
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/50 backdrop-blur border-t border-gray-100 text-gray-400 py-8 text-center text-sm relative z-10">
+        <p>
+            <strong>⚠️ <span data-i18n="disclaimer_title">LƯU Ý:</span></strong> <span data-i18n="disclaimer_text">Trang web này mang tính chất giải trí.</span>
+        </p>
+        <div class="pt-4 mt-4 text-xs text-gray-300">
+            &copy; 2025 <span data-i18n="footer_project">Dự án Nuôi Tôi.</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification (Copy) -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-all duration-300 translate-y-10 pointer-events-none z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toast-message">Đã copy!</span>
+    </div>
+
+    <!-- Messenger Style Popup -->
+    <div id="messenger-pop" class="messenger-pop fixed top-0 left-0 right-0 z-[60] px-4 pt-4 md:pt-6 pointer-events-none flex justify-center">
+        <div class="bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl p-4 w-full max-w-lg border border-gray-100 ring-1 ring-black/5 flex items-center gap-4 relative overflow-hidden">
+            <div id="pop-color-bar" class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+            <div class="shrink-0 relative">
+                <div id="pop-avatar-bg" class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-xl text-green-600 shadow-sm border border-white">
+                    <i id="pop-icon" class="fa-solid fa-bell"></i>
+                </div>
+                <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                    <h4 id="pop-title" class="font-bold text-gray-900 truncate pr-2 text-base">Thông báo mới</h4>
+                    <span class="text-[10px] text-gray-400 whitespace-nowrap pt-0.5" id="pop-time-text">Vừa xong</span>
+                </div>
+                <p id="pop-msg" class="text-sm text-gray-600 truncate mt-0.5 font-medium">Nội dung thông báo...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CẤU HÌNH NGÔN NGỮ (DICTIONARY) ---
+        let currentLang = 'vi';
+        
+        const langConfig = {
+            vi: { flag: '🇻🇳', name: 'Tiếng Việt' },
+            en: { flag: '🇬🇧', name: 'English' },
+            jp: { flag: '🇯🇵', name: '日本語' },
+            kr: { flag: '🇰🇷', name: '한국어' }
+        };
+
+        const translations = {
+            vi: {
+                brand_name: "NUÔI TÔI",
+                hero_tag: "🔋 Cần nạp năng lượng để tồn tại",
+                hero_title_1: "HÃY",
+                hero_title_highlight: "NUÔI TÔI",
+                hero_subtitle: "Tôi hứa sao kê đầy đủ! 💯",
+                hero_quote: "Tôi nghèo, tôi đói, nhưng tôi uy tín. Mỗi bữa ăn bạn mời, tôi sẽ ghi nhớ đến tận bữa sau.",
+                stat_balance: "💰 Số Dư Hiện Tại",
+                stat_realtime: "Realtime",
+                stat_goal: "🎯 Mục tiêu tháng này",
+                stat_cheer: "Sắp đủ tiền đóng học lại rồi...",
+                plan_title: "Tôi Sẽ Dùng Tiền Vào Đâu?",
+                plan_1: "Đóng tiền học lại",
+                plan_1_desc: "Ưu tiên số 1, cứu vớt tấm bằng.",
+                plan_2: "Sữa Milo & Kẹo",
+                plan_3: "Bim bim (Snack)",
+                history_title: "Sao Kê Realtime",
+                table_time: "Thời gian",
+                table_user: "Người chuyển/Nhận",
+                table_amount: "Số tiền",
+                table_content: "Nội dung",
+                donate_title: "CỔNG TIẾP TẾ LƯƠNG THỰC",
+                donate_desc: "Mỗi đóng góp của bạn là một bát cơm (hoặc gói mì) cho tôi.",
+                qr_note: "2.000đ cũng nhận ạ",
+                acc_num_label: "Số Tài Khoản",
+                scan_note: "Quét mã bằng app ngân hàng nào cũng được ạ.",
+                disclaimer_title: "LƯU Ý:",
+                disclaimer_text: "Trang web này mang tính chất giải trí.",
+                footer_project: "Dự án Nuôi Tôi.",
+                
+                // Dynamic Text
+                just_now: "Vừa xong",
+                today: "Hôm nay",
+                yesterday: "Hôm qua",
+                report_title: "Báo cáo chi tiêu",
+                withdrew: "Vừa rút quỹ",
+                donated: "Vừa donate",
+                pop_new: "Thông báo mới"
+            },
+            en: {
+                brand_name: "FEED ME",
+                hero_tag: "🔋 Need energy to survive",
+                hero_title_1: "PLEASE",
+                hero_title_highlight: "FEED ME",
+                hero_subtitle: "Full transparency promised! 💯",
+                hero_quote: "I'm poor, I'm hungry, but I'm legit. Every meal you sponsor, I'll remember until my next meal.",
+                stat_balance: "💰 Current Balance",
+                stat_realtime: "Realtime",
+                stat_goal: "🎯 Monthly Goal",
+                stat_cheer: "Almost enough for tuition fees...",
+                plan_title: "Where Does The Money Go?",
+                plan_1: "Retake Tuition Fees",
+                plan_1_desc: "Priority #1, saving my degree.",
+                plan_2: "Milo & Sweets",
+                plan_3: "Snacks & Chips",
+                history_title: "Realtime History",
+                table_time: "Time",
+                table_user: "Sender/Receiver",
+                table_amount: "Amount",
+                table_content: "Content",
+                donate_title: "FOOD SUPPLY PORTAL",
+                donate_desc: "Every contribution is a bowl of rice (or noodles) for me.",
+                qr_note: "Even 2.000đ is appreciated",
+                acc_num_label: "Account Number",
+                scan_note: "Scan with any banking app.",
+                disclaimer_title: "DISCLAIMER:",
+                disclaimer_text: "This website is for entertainment purposes.",
+                footer_project: "Feed Me Project.",
+                just_now: "Just now",
+                today: "Today",
+                yesterday: "Yesterday",
+                report_title: "Expense Report",
+                withdrew: "Just withdrew",
+                donated: "Just donated",
+                pop_new: "New Notification"
+            },
+            jp: {
+                brand_name: "私を養って",
+                hero_tag: "🔋 生きるためにエネルギーが必要",
+                hero_title_1: "お願い",
+                hero_title_highlight: "私を養って",
+                hero_subtitle: "完全な透明性を約束します！ 💯",
+                hero_quote: "私は貧しく、お腹が空いていますが、正当です。スポンサーしてくれた食事は、次の食事まで覚えています。",
+                stat_balance: "💰 現在の残高",
+                stat_realtime: "リアルタイム",
+                stat_goal: "🎯 今月の目標",
+                stat_cheer: "授業料にはもうすぐ足りる...",
+                plan_title: "お金はどこへ消える？",
+                plan_1: "再履修の授業料",
+                plan_1_desc: "優先順位1位、学位を救うため。",
+                plan_2: "ミロとお菓子",
+                plan_3: "スナックとポテチ",
+                history_title: "リアルタイム履歴",
+                table_time: "時間",
+                table_user: "送金者/受取人",
+                table_amount: "金額",
+                table_content: "内容",
+                donate_title: "食料供給ポータル",
+                donate_desc: "すべての寄付は私にとって一杯のご飯（またはラーメン）です。",
+                qr_note: "2,000ドンでも感謝します",
+                acc_num_label: "口座番号",
+                scan_note: "どの銀行アプリでもスキャン可能です。",
+                disclaimer_title: "免責事項:",
+                disclaimer_text: "このウェブサイトは娯楽目的です。",
+                footer_project: "Feed Me Project.",
+                just_now: "たった今",
+                today: "今日",
+                yesterday: "昨日",
+                report_title: "支出報告",
+                withdrew: "引き出した",
+                donated: "寄付された",
+                pop_new: "新しい通知"
+            },
+            kr: {
+                brand_name: "나를 키워줘",
+                hero_tag: "🔋 생존을 위해 에너지가 필요해",
+                hero_title_1: "제발",
+                hero_title_highlight: "나를 키워줘",
+                hero_subtitle: "투명한 공개 약속! 💯",
+                hero_quote: "가난하고 배고프지만, 저는 정직합니다. 후원해주신 밥 한 끼, 다음 식사 때까지 기억할게요.",
+                stat_balance: "💰 현재 잔액",
+                stat_realtime: "실시간",
+                stat_goal: "🎯 이번 달 목표",
+                stat_cheer: "재수강비가 거의 모였어요...",
+                plan_title: "돈은 어디에 쓰나요?",
+                plan_1: "재수강 등록금",
+                plan_1_desc: "우선순위 1위, 학위를 구하자.",
+                plan_2: "마일로 & 사탕",
+                plan_3: "과자 & 간식",
+                history_title: "실시간 내역",
+                table_time: "시간",
+                table_user: "보낸사람/받는사람",
+                table_amount: "금액",
+                table_content: "내용",
+                donate_title: "식량 보급 포털",
+                donate_desc: "모든 기부는 저에게 밥 한 공기(또는 라면)가 됩니다.",
+                qr_note: "2,000동도 감사합니다",
+                acc_num_label: "계좌 번호",
+                scan_note: "모든 은행 앱으로 스캔 가능합니다.",
+                disclaimer_title: "주의:",
+                disclaimer_text: "이 웹사이트는 오락용입니다.",
+                footer_project: "Feed Me Project.",
+                just_now: "방금",
+                today: "오늘",
+                yesterday: "어제",
+                report_title: "지출 보고",
+                withdrew: "출금 완료",
+                donated: "기부 받음",
+                pop_new: "새로운 알림"
+            }
+        };
+
+        // --- UI DROPDOWN LOGIC ---
+        function toggleDropdown(e) {
+            e.stopPropagation();
+            const menu = document.getElementById('lang-menu');
+            menu.classList.toggle('active');
+        }
+
+        function closeDropdown(e) {
+            const menu = document.getElementById('lang-menu');
+            if (!menu.contains(e.target) && e.target.id !== 'lang-btn') {
+                menu.classList.remove('active');
+            }
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Update UI Button
+            document.getElementById('current-flag').innerText = langConfig[lang].flag;
+            document.getElementById('current-lang-name').innerText = langConfig[lang].name;
+            
+            // Update Static Text
+            updateStaticText();
+
+            // Re-render Table (Dùng Master Data để không bị mất dòng mới)
+            renderTableFromMasterData();
+
+            // Close menu
+            document.getElementById('lang-menu').classList.remove('active');
+        }
+
+        function updateStaticText() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+
+        // --- DATA QUẢN LÝ (MASTER DATA) ---
+        let currentTotal = 0;
+        const goal = 1000000;
+        
+        // Dữ liệu ban đầu
+        const initialTransactions = [
+            { name: "TRINH THI MAI (Tap hoa co Mai)", amount: 12000, msg: "Mua 2 goi Bim Bim", fixedHour: 15, fixedMin: 32, type: 'spend', baseDayOffset: 0 },
+            { name: "LE QUOC NHAN", amount: 2000, msg: "Con co 2k thui", fixedHour: 12, fixedMin: 14, type: 'receive', baseDayOffset: 0 },
+            { name: "TRAN MINH", amount: 3000, msg: "Cua it long vong", fixedHour: 10, fixedMin: 47, type: 'receive', baseDayOffset: 0 },
+            { name: "NGUYEN VAN TUAN (Circle K)", amount: 15000, msg: "Mua chai nuoc ngot", fixedHour: 20, fixedMin: 03, type: 'spend', baseDayOffset: 1 },
+            { name: "NGUYEN KHANH LINH", amount: 50000, msg: "NGUYEN KHANH LINH chuyen khoan", fixedHour: 14, fixedMin: 21, type: 'receive', baseDayOffset: 1 },
+            { name: "VU THI YEN NHI (Quan com tam)", amount: 35000, msg: "Com suon bi cha", fixedHour: 11, fixedMin: 38, type: 'spend', baseDayOffset: 2 },
+            { name: "PHAM THI THU HA (Ban cung lop)", amount: 20000, msg: "Mua banh mi nha", fixedHour: 7, fixedMin: 12, type: 'receive', baseDayOffset: 2 },
+            { name: "NGUYEN VAN LONG", amount: 10000, msg: "NGUYEN VAN LONG chuyen tien", fixedHour: 16, fixedMin: 09, type: 'receive', baseDayOffset: 3 },
+            { name: "PHAM THUY BIEN (Me yeu)", amount: 200000, msg: "Cho tien dong tien hoc", fixedHour: 8, fixedMin: 04, type: 'receive', baseDayOffset: 3 }
+        ];
+
+        // Biến chứa TẤT CẢ giao dịch (để fix lỗi mất data khi đổi ngôn ngữ)
+        let masterTransactionList = [];
+
+        // --- HÀM XỬ LÝ TIME & INIT ---
+        function processTime(item) {
+            // Nếu item đã có dateObj (là item được thêm dynamic), giữ nguyên
+            if (item.dateObj) return item;
+
+            // Nếu là static item, tính toán dateObj dựa trên logic giờ cố định
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMin = now.getMinutes();
+            let finalDayOffset = item.baseDayOffset;
+            if (item.baseDayOffset === 0) {
+                if (currentHour < item.fixedHour || (currentHour === item.fixedHour && currentMin < item.fixedMin)) {
+                    finalDayOffset = 1;
+                }
+            }
+            const eventTime = new Date(now);
+            eventTime.setDate(now.getDate() - finalDayOffset);
+            eventTime.setHours(item.fixedHour, item.fixedMin, 0, 0);
+            
+            // Return copy object with processed data
+            return { ...item, dateObj: eventTime, finalDayOffset: finalDayOffset };
+        }
+
+        function initData() {
+            // Xử lý dữ liệu ban đầu và đưa vào Master List
+            initialTransactions.forEach(item => {
+                masterTransactionList.push(processTime(item));
+            });
+            // Sort
+            masterTransactionList.sort((a, b) => b.dateObj - a.dateObj);
+        }
+
+        // --- HÀM RENDER TỪ MASTER LIST ---
+        function renderTableFromMasterData() {
+            const tableBody = document.getElementById('history-body');
+            tableBody.innerHTML = ''; // Clear table
+            
+            masterTransactionList.forEach(item => {
+                // Kiểm tra xem item này có phải là item mới thêm vào gần đây không để highlight
+                // Logic đơn giản: Nếu nó được thêm bằng JS dynamic, nó sẽ có cờ isDynamic
+                const isNew = item.isDynamic && (Date.now() - item.dateObj.getTime() < 10000); 
+                tableBody.innerHTML += createRowHTML(item, isNew);
+            });
+        }
+
+        function calculateInitialTotal() {
+            let total = 0;
+            masterTransactionList.forEach(item => {
+                if (item.type === 'receive') total += item.amount;
+                else total -= item.amount;
+            });
+            return total;
+        }
+
+        // --- UTILS FORMAT & ANIMATION ---
+        function formatMoney(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function animateTotal(start, end) {
+            const display = document.getElementById('total-balance-display');
+            const duration = 1000;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                display.innerHTML = formatMoney(value);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function updateProgressBar(current) {
+            const percentage = Math.min((current / goal) * 100, 100).toFixed(1);
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `${percentage}%`;
+        }
+
+        // --- CREATE HTML ROW (Hỗ trợ đa ngôn ngữ) ---
+        function createRowHTML(item, isNew = false) {
+            let timeString;
+            const txtNow = translations[currentLang].just_now;
+            const txtToday = translations[currentLang].today;
+            const txtYest = translations[currentLang].yesterday;
+
+            const h = item.dateObj.getHours().toString().padStart(2, '0');
+            const m = item.dateObj.getMinutes().toString().padStart(2, '0');
+            const d = item.dateObj.getDate().toString().padStart(2, '0');
+            const mo = (item.dateObj.getMonth() + 1).toString().padStart(2, '0');
+            const y = item.dateObj.getFullYear();
+
+            // Logic hiển thị ngày tháng thông minh theo ngôn ngữ
+            let dayLabel = "";
+            
+            // Tính khoảng cách ngày để label chính xác (cho cả item dynamic)
+            const now = new Date();
+            const diffTime = Math.abs(now - item.dateObj);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Nếu là dynamic item vừa thêm
+            if (item.isDynamic && diffTime < 60000) {
+                 timeString = `${h}:${m} <br> <span class="text-xs text-green-600 font-bold">${txtNow}</span>`;
+            } else {
+                // Logic ngày tháng
+                if (now.getDate() === item.dateObj.getDate()) {
+                    dayLabel = `<span class="text-green-600 font-bold">${txtToday}</span>`;
+                } else if (now.getDate() - item.dateObj.getDate() === 1) {
+                    dayLabel = txtYest;
+                } else {
+                    dayLabel = `${d}/${mo}`;
+                }
+                timeString = `${h}:${m} <br> <span class="text-xs text-gray-400">${dayLabel}</span>`;
+            }
+
+            const isSpend = item.type === 'spend';
+            const amountColor = isSpend ? 'text-red-500' : 'text-green-600';
+            const amountSign = isSpend ? '-' : '+';
+            // Chỉ highlight nếu isNew = true
+            const rowClass = isNew ? 'new-row-highlight' : (isSpend ? 'hover:bg-red-50/50' : 'hover:bg-green-50/50');
+            
+            let displayName = item.name;
+            if (item.name.includes('(')) {
+                const parts = item.name.split('(');
+                displayName = `<span class="font-bold text-gray-800">${parts[0]}</span> <br> <span class="text-xs text-gray-500 font-normal italic">(${parts[1]}</span>`;
+            } else {
+                displayName = `<span class="font-bold text-gray-800">${item.name}</span>`;
+            }
+
+            return `
+                <tr class="${rowClass} transition border-b border-gray-50 last:border-0 group">
+                    <td class="p-4 text-gray-500 font-mono text-sm leading-tight whitespace-nowrap align-top">${timeString}</td>
+                    <td class="p-4 text-sm md:text-base uppercase tracking-tight align-top">${displayName}</td>
+                    <td class="p-4 text-right font-bold ${amountColor} align-top">${amountSign} ${formatMoney(item.amount)}</td>
+                    <td class="p-4 italic text-gray-400 text-sm group-hover:text-gray-600 align-top">"${item.msg}"</td>
+                </tr>
+            `;
+        }
+
+        // --- KỊCH BẢN TỰ ĐỘNG ---
+        function addNewTransaction(name, amount, msg, type) {
+            const oldTotal = currentTotal;
+            if (type === 'receive') currentTotal += amount;
+            else currentTotal -= amount;
+
+            animateTotal(oldTotal, currentTotal);
+            updateProgressBar(currentTotal);
+
+            // Tạo item mới
+            const newItem = { 
+                name, 
+                amount, 
+                msg, 
+                type, 
+                dateObj: new Date(), // Set thời gian thực ngay lúc thêm
+                isDynamic: true // Đánh dấu là item động
+            };
+
+            // THÊM VÀO MASTER LIST (Đây là bước quan trọng để không bị mất khi đổi ngôn ngữ)
+            masterTransactionList.unshift(newItem);
+
+            // Render lại toàn bộ bảng (thay vì insertAdjacentHTML) để đảm bảo đồng bộ
+            renderTableFromMasterData();
+
+            showMessengerPopup(newItem);
+        }
+
+        function showMessengerPopup(item) {
+            const pop = document.getElementById('messenger-pop');
+            const colorBar = document.getElementById('pop-color-bar');
+            const avatarBg = document.getElementById('pop-avatar-bg');
+            const icon = document.getElementById('pop-icon');
+            const title = document.getElementById('pop-title');
+            const timeText = document.getElementById('pop-time-text');
+            const message = document.getElementById('pop-msg');
+
+            const isSpend = item.type === 'spend';
+            
+            // Localized Strings
+            const txtReport = translations[currentLang].report_title;
+            const txtWithdrew = translations[currentLang].withdrew;
+            const txtDonated = translations[currentLang].donated;
+            const txtJustNow = translations[currentLang].just_now;
+
+            timeText.innerText = txtJustNow;
+
+            if (isSpend) {
+                colorBar.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-red-500";
+                avatarBg.className = "w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-xl text-red-600 shadow-sm border border-white";
+                icon.className = "fa-solid fa-arrow-trend-down";
+                title.innerText = txtReport;
+                message.innerHTML = `${txtWithdrew} <span class="font-bold text-red-600">-${formatMoney(item.amount)}đ</span>: ${item.msg}`;
+            } else {
+                colorBar.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-green-500";
+                avatarBg.className = "w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-xl text-green-600 shadow-sm border border-white";
+                icon.className = "fa-solid fa-coins animate-bounce";
+                title.innerText = item.name.split('(')[0];
+                message.innerHTML = `${txtDonated} <span class="font-bold text-green-600">+${formatMoney(item.amount)}đ</span>: "${item.msg}"`;
+            }
+
+            pop.classList.add('show');
+            setTimeout(() => { pop.classList.remove('show'); }, 6000);
+        }
+
+        // --- MAIN INIT ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('hidden-loader');
+                initWebLogic();
+            }, 2200);
+        });
+
+        function initWebLogic() {
+            initData(); // Init Master List
+            currentTotal = calculateInitialTotal();
+            document.getElementById('total-balance-display').innerHTML = formatMoney(currentTotal);
+            updateProgressBar(currentTotal);
+
+            // Initial Render
+            renderTableFromMasterData();
+
+            // Kịch bản tự động
+            setTimeout(() => {
+                addNewTransaction("TRAN THI BICH NGOC (Ban cu cap 3)", 20000, "Uong nuoc nha", "receive");
+            }, 15000); // 15s
+
+            setTimeout(() => {
+                addNewTransaction("VIETTEL TELECOM (Nap tien DT)", 50000, "Gia han goi 4G thang", "spend");
+            }, 45000); // 45s
+        }
+
+        // Copy logic
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Đã copy: ${text}`);
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast(`Đã copy: ${text}`);
+            });
+        }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.remove('opacity-0');
+            toast.classList.remove('translate-y-10');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                toast.classList.add('translate-y-10');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
+
