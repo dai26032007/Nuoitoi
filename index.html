@@ -812,6 +812,8 @@
         
         // Dữ liệu ban đầu
         const initialTransactions = [
+            { name: "VND-TGTT-TRIEU TIEN THO - 19070127057019", amount: 2000, msg: "Cho mua mi tom FT25350103112787 Ma giao dich Trace161414 Trace 161414", fixedHour: 12, fixedMin: 14, type: 'receive', baseDayOffset: 0 },
+            { name: "DO THANH TAI", amount: 2000, msg: "DO THANH TAI chuyen tien", fixedHour: 10, fixedMin: 47, type: 'receive', baseDayOffset: 0 },
             { name: "TRINH THI MAI (Tap hoa co Mai)", amount: 12000, msg: "Mua 2 goi Bim Bim", fixedHour: 15, fixedMin: 32, type: 'spend', baseDayOffset: 0 },
             { name: "LE QUOC NHAN", amount: 2000, msg: "Con co 2k thui", fixedHour: 12, fixedMin: 14, type: 'receive', baseDayOffset: 0 },
             { name: "TRAN MINH DUC", amount: 3000, msg: "Cua it long vong", fixedHour: 10, fixedMin: 47, type: 'receive', baseDayOffset: 0 },
@@ -1025,7 +1027,7 @@
             renderTableFromMasterData();
 
             setTimeout(() => {
-                addNewTransaction("TRAN THI BICH NGOC (Ban cu cap 3)", 20000, "Cho mua milo", "receive");
+                addNewTransaction("NGO GIA PHUONG (Ban cu cap 3)", 5000, "Nui th em het cai dai hoc", "receive");
             }, 15000);
 
             setTimeout(() => {
